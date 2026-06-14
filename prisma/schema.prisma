@@ -1,0 +1,47 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Get a free hosted Postgres database in seconds: `npx create-db`
+
+generator client {
+  provider = "prisma-client"
+  output   = "../generated/prisma"
+}
+
+datasource db {
+  provider = "sqlite"
+}
+
+model Game {
+  id              String       @id
+  title           String
+  backgroundImage String?
+  posts           DevlogPost[]
+}
+
+model DevlogPost {
+  id              String   @id
+  title           String
+  author          String
+  gameId          String
+  backgroundImage String?
+  backgroundColor String?
+  sourceLanguage  String
+  content         String
+  createdAt       DateTime
+  game            Game     @relation(fields: [gameId], references: [id], onDelete: Cascade)
+}
+
+model Translation {
+  id             String   @id @default(cuid())
+  sourceLanguage String
+  targetLanguage String
+  sourceTextHash String
+  sourceText     String
+  translatedText String
+  provider       String   @default("yandex")
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+
+  @@unique([sourceLanguage, targetLanguage, sourceTextHash])
+}

@@ -1,3 +1,7 @@
+import { juraNewYearDevlogPosts } from "@/lib/jura-new-year-devlog-posts";
+import { perceptualDevlogPosts } from "@/lib/perceptual-devlog-posts";
+import { walkMeHomeDevlogPosts } from "@/lib/walk-me-home-devlog-posts";
+
 export type GameId = "perceptual" | "walk-me-home" | "jura-new-year";
 
 export type DevlogPost = {
@@ -12,20 +16,39 @@ export type DevlogPost = {
   createdAt: string;
 };
 
-export const games: { id: GameId; title: string }[] = [
-  { id: "perceptual", title: "PERCEPTUAL" },
-  { id: "walk-me-home", title: "Walk Me Home" },
-  { id: "jura-new-year", title: "Jura: New Year" },
-];
-
 export const defaultImage = "/img/default.jpg";
+
+export const pageBackgroundImages = {
+  default: "/img/default-background.png",
+  perceptual: "/img/perceptual-background.png",
+  walkMeHome: "/img/walk-me-home-background.png",
+  juraNewYear: "/img/jura-new-year-background.png",
+};
 
 export const cardColors = {
   default: "#172033",
-  perceptual: "#172033",
-  walkMeHome: "#293241",
-  juraNewYear: "#2f3e2f",
+  perceptual: "#231414ff",
+  walkMeHome: "#392131ff",
+  juraNewYear: "#23233cff",
 };
+
+export const games: { id: GameId; title: string; backgroundImage: string }[] = [
+  {
+    id: "perceptual",
+    title: "PERCEPTUAL",
+    backgroundImage: pageBackgroundImages.perceptual,
+  },
+  {
+    id: "walk-me-home",
+    title: "Walk Me Home",
+    backgroundImage: pageBackgroundImages.walkMeHome,
+  },
+  {
+    id: "jura-new-year",
+    title: "Jura: New Year",
+    backgroundImage: pageBackgroundImages.juraNewYear,
+  },
+];
 
 export const perceptualPosts: DevlogPost[] = [
   {
@@ -66,86 +89,9 @@ export const perceptualPosts: DevlogPost[] = [
   },
 ];
 
-export const walkMeHomePosts: DevlogPost[] = [
-  {
-    id: "walk-me-home-first-route",
-    title: "Первый маршрут",
-    author: "Alex",
-    game: "walk-me-home",
-    backgroundImage: "/img/walk-me-home/1.png",
-    backgroundColor: cardColors.walkMeHome,
-    sourceLanguage: "ru",
-    content:
-      "Я собрал первый играбельный маршрут и начал проверять, достаточно ли спокойно ощущается темп до появления основного напряжения.",
-    createdAt: "2026-06-11",
-  },
-  {
-    id: "walk-me-home-sound-pass",
-    title: "Проход по звуку",
-    author: "Alex",
-    game: "walk-me-home",
-    backgroundImage: "/img/walk-me-home/1.png",
-    backgroundColor: cardColors.walkMeHome,
-    sourceLanguage: "ru",
-    content:
-      "Добавил временную атмосферу и шаги. Даже простые звуки уже делают прогулку более живой и менее пустой.",
-    createdAt: "2026-06-13",
-  },
-  {
-    id: "walk-me-home-dialogue-notes",
-    title: "Заметки по диалогам",
-    author: "Alex",
-    game: "walk-me-home",
-    backgroundImage: "/img/walk-me-home/1.png",
-    backgroundColor: cardColors.walkMeHome,
-    sourceLanguage: "ru",
-    content:
-      "Я набросал несколько коротких диалоговых моментов для дороги домой. Цель — сохранить текст тихим, прямым и немного тревожным.",
-    createdAt: "2026-06-16",
-  },
-];
-
-export const juraNewYearPosts: DevlogPost[] = [
-  {
-    id: "jura-new-year-snow-test",
-    title: "Тест снега",
-    author: "Alex",
-    game: "jura-new-year",
-    backgroundImage: "/img/jura-new-year/1.png",
-    backgroundColor: cardColors.juraNewYear,
-    sourceLanguage: "ru",
-    content:
-      "Я протестировал простой эффект снега и настроил плотность так, чтобы он создавал праздничное настроение, но не закрывал важные части сцены.",
-    createdAt: "2026-06-09",
-  },
-  {
-    id: "jura-new-year-gift-props",
-    title: "Подарки и декор",
-    author: "Alex",
-    game: "jura-new-year",
-    backgroundImage: "/img/jura-new-year/1.png",
-    backgroundColor: cardColors.juraNewYear,
-    sourceLanguage: "ru",
-    content:
-      "Начал делать небольшие подарки и декоративные объекты. Они простые, но помогают комнате ощущаться более конкретной и обжитой.",
-    createdAt: "2026-06-15",
-  },
-  {
-    id: "jura-new-year-main-menu",
-    title: "Главное меню",
-    author: "Alex",
-    game: "jura-new-year",
-    backgroundImage: "/img/jura-new-year/1.png",
-    backgroundColor: cardColors.juraNewYear,
-    sourceLanguage: "ru",
-    content:
-      "Первый макет главного меню уже на месте. Я стараюсь сохранить уютное настроение, но при этом сделать кнопки понятными и легко читаемыми.",
-    createdAt: "2026-06-17",
-  },
-];
-
 export const posts: DevlogPost[] = [
+  ...perceptualDevlogPosts,
   ...perceptualPosts,
-  ...walkMeHomePosts,
-  ...juraNewYearPosts,
+  ...walkMeHomeDevlogPosts,
+  ...juraNewYearDevlogPosts,
 ];

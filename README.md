@@ -1,36 +1,174 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Devlog Translator
 
-## Getting Started
+![Вид сайта](public/screenshots/home-page.png)
 
-First, run the development server:
+Devlog Translator - веб-сайт для просмотра и перевода девлогов инди-игр. Проект собирает посты по разным играм в единую ленту, позволяет фильтровать их по проектам и переводить текст через Yandex Cloud Translate.
+
+![Пример поста с переводом](public/screenshots/translated-post.png)
+
+## Команда разработки
+
+- UnderAlyx
+- Aleshka228PRO
+- papaChill
+
+## Стек
+
+- Next.js 16
+- React 19
+- TypeScript
+- Tailwind CSS 4
+- Prisma
+- SQLite через встроенный модуль Node.js `node:sqlite`
+- Yandex Cloud Translate API
+- ESLint
+
+## Информация о проекте
+
+Сайт показывает девлоги игр с обложками, фоновыми изображениями и метаданными постов. Данные о играх и постах хранятся в SQLite-базе `dev.db`, которая заполняется из файлов в `src/lib` с помощью seed-скрипта Prisma.
+
+Перевод работает через API-роут Next.js `src/app/api/translate/route.ts`. Для запросов к переводчику используются переменные окружения Yandex Cloud, а результат дополнительно кэшируется на стороне браузера в `localStorage`.
+
+Основные возможности:
+
+- лента девлогов;
+- фильтрация постов по игре;
+- перевод постов на выбранный язык;
+- локальная SQLite-база для данных сайта;
+- адаптивный интерфейс на Next.js.
+
+## Подробный гайд по запуску сайта
+
+### 1. Установите Node.js
+
+Для проекта нужен Node.js с поддержкой `node:sqlite`. Рекомендуется использовать актуальную версию Node.js 22 или новее.
+
+Проверьте версии:
+
+```bash
+node -v
+npm -v
+```
+
+### 2. Перейдите в папку проекта
+
+Если вы находитесь в корне репозитория:
+
+```bash
+cd devlog-translator-web
+```
+
+### 3. Установите зависимости
+
+```bash
+npm install
+```
+
+### 4. Создайте файл переменных окружения
+
+В папке `devlog-translator-web` создайте файл `.env`:
+
+```env
+DATABASE_URL="file:./dev.db"
+YANDEX_API_KEY="ваш_api_ключ_yandex_cloud"
+YANDEX_FOLDER_ID="ваш_folder_id_yandex_cloud"
+```
+
+Назначение переменных:
+
+- `DATABASE_URL` - путь к локальной SQLite-базе.
+- `YANDEX_API_KEY` - API-ключ для Yandex Cloud Translate.
+- `YANDEX_FOLDER_ID` - идентификатор каталога в Yandex Cloud.
+
+Если нужно только открыть сайт и посмотреть ленту, база данных всё равно нужна. Переменные Yandex обязательны для работы кнопки перевода.
+
+### 5. Подготовьте базу данных
+
+Сгенерируйте Prisma Client:
+
+```bash
+npm run db:generate
+```
+
+Примените миграции и создайте SQLite-базу:
+
+```bash
+npm run db:migrate
+```
+
+Заполните базу начальными данными:
+
+```bash
+npm run db:seed
+```
+
+После выполнения этих команд в папке проекта появится файл `dev.db`.
+
+### 6. Запустите сайт в режиме разработки
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+По умолчанию Next.js запустит локальный сервер на адресе:
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```text
+http://localhost:3000
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+Откройте этот адрес в браузере.
 
-## Learn More
+### 7. Проверьте работу
 
-To learn more about Next.js, take a look at the following resources:
+На сайте должна открыться лента девлогов. Проверьте:
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+- переключение фильтров по играм;
+- отображение карточек постов;
+- кнопку перевода;
+- отсутствие ошибок в терминале.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+Если перевод не работает, проверьте значения `YANDEX_API_KEY` и `YANDEX_FOLDER_ID` в `.env`.
 
-## Deploy on Vercel
+## Полезные команды
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+```bash
+npm run dev
+```
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Запуск сайта в режиме разработки.
+
+```bash
+npm run build
+```
+
+Сборка production-версии.
+
+```bash
+npm run start
+```
+
+Запуск production-сборки после `npm run build`.
+
+```bash
+npm run lint
+```
+
+Проверка кода линтером.
+
+```bash
+npm run db:generate
+```
+
+Генерация Prisma Client.
+
+```bash
+npm run db:migrate
+```
+
+Применение миграций базы данных.
+
+```bash
+npm run db:seed
+```
+
+Заполнение базы начальными данными.
